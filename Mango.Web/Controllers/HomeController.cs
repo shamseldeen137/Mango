@@ -1,3 +1,4 @@
+using Mango.Web.Cart.Models.Dto;
 using Mango.Web.Models;
 using Mango.Web.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
@@ -5,15 +6,20 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using IdentityModel;
+
 
 namespace Mango.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IProductService _productService;
-        public HomeController(IProductService productService)
+        private readonly ICartService _cartService;
+
+        public HomeController(IProductService productService,ICartService cartService)
         {
             _productService = productService;
+            _cartService = cartService;
         }
 
 
@@ -52,6 +58,40 @@ namespace Mango.Web.Controllers
             }
 
             return View(model);
+        }
+   [Authorize]
+        [HttpPost]
+        [ActionName("ProductDetails")]
+        public async Task<IActionResult> ProductDetails(ProductDto productDto)
+        {
+            CartDto cartDto = new CartDto
+            {
+                CartHeader = new CartHeaderDto
+                {
+                    UserId = User.Claims.Where(u => u.Type == JwtClaimTypes.Subject)?.FirstOrDefault()?.Value
+                }
+            };
+            CartDetailsDto cartDetails = new CartDetailsDto
+            {
+                Count = productDto.Count,
+                ProductId = productDto.ProductId,
+            };
+            cartDto.CartDetails = new List<CartDetailsDto> { cartDetails };
+            ResponseDto? response = await _cartService.UpsertCart(cartDto);
+            if (response.IsSuccess)
+            {
+                TempData["success"] = "Item Added to Cart Successfully";
+                return RedirectToAction(nameof(Index));
+
+            }
+            else
+            {
+                TempData["error"] =response.Message;
+
+            }
+           
+
+            return View(productDto);
         }
 
 

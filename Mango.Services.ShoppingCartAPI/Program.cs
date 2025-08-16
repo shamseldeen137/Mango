@@ -7,7 +7,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Mango.Services.ShoppingCartAPI.Extentions;
-using Mango.Services.ShoppingCartAPI; // Add this using directive at the top of the file
+using Mango.Services.ShoppingCartAPI;
+using Mango.Web.Services.IServices;
+using Mango.Services.ShoppingCartAPI.Services.Product;
+using Mango.Services.ShoppingCartAPI.Utility;
+using Mango.MessageBus;
+using Mango.RabbitMQ.Messaging; // Add this using directive at the top of the file
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -17,8 +22,21 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<BEApiAuthHandler>();
 
 // Add services to the container.
+
+builder.Services.AddHttpClient("Product",
+    u=>u.BaseAddress = 
+    new Uri(builder.Configuration["ServiceUrls:ProductAPI"])).AddHttpMessageHandler<BEApiAuthHandler>();
+builder.Services.AddHttpClient("Coupon",
+    u=>u.BaseAddress = 
+    new Uri(builder.Configuration["ServiceUrls:CouponAPI"])).AddHttpMessageHandler<BEApiAuthHandler>();
+
+builder.Services.AddRabbitMQMessaging(builder.Configuration);
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -55,6 +73,13 @@ builder.Services.AddSwaggerGen(option =>
 builder.AddAppAuthentication(); // Call the extension method to add authentication
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<IProductService,ProductService>();
+builder.Services.AddScoped<ICouponService,CouponService>();
+builder.Services.AddScoped<IMessageBus,MessageBus>();
+builder.Services.AddScoped<IMessagePublisher, MessagePublisher>();
+
+
 
 var app = builder.Build();
 

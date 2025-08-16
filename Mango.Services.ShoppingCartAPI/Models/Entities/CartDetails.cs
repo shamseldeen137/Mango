@@ -11,7 +11,7 @@ namespace Mango.Services.ShoppingCartAPI.Models.Entities
 
         public int CartHeaderId { get; set; }
         [ForeignKey(nameof(CartHeaderId))]
-        public CartHeaderDto CartHeader { get; set; }
+        public CartHeader CartHeader { get; set; }
         public int ProductId { get; set; }
         [NotMapped]
         public ProductDto Product { get; set; }

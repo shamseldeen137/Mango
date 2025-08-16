@@ -10,6 +10,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
+	  <PackageReference Include="IdentityModel" Version="6.0.0" />
+
   </ItemGroup>
 
 </Project>

@@ -40,7 +40,12 @@ namespace Mango.Web.Services.BaseServices
                     if (apiRequest.Data is not null)
                     {
                         message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), Encoding.UTF8, "application/json");
+
+                        //var json = JsonConvert.SerializeObject(apiRequest.Data);
+                        //var content = new StringContent(json, Encoding.UTF8, "application/json");
+                        //message.Content = content;
                     }
+                    
                     HttpResponseMessage apiresponse = null;
                     switch (apiRequest.ApiType)
                     {
@@ -61,7 +66,7 @@ namespace Mango.Web.Services.BaseServices
                             break;
 
                     }
-
+                    
                     apiresponse = await client.SendAsync(message);
                     switch (apiresponse.StatusCode)
                     {
