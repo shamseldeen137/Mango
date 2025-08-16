@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
-using Mango.MessageBus;
+using Mango.MessageBus.IMessaging;
+using Mango.MessageBus.Messaging;
 using Mango.RabbitMQ.Messaging;
 using Mango.Services.ShoppingCartAPI.Data;
 using Mango.Services.ShoppingCartAPI.Models.Dto;
 using Mango.Services.ShoppingCartAPI.Models.Entities;
 using Mango.Services.ShoppingCartAPI.Services.Product;
+using Mango.Services.ShoppingCartAPI.Utility;
 using Mango.Web.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +24,16 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
         private readonly IMapper _mapper;
         private readonly IProductService _productService;
         private readonly ICouponService _couponService;
-        private readonly IMessageBus _messageBus;
-        private readonly IMessagePublisher _messageRabbitMq;
+        private readonly IPublishMessage _messageBus;
+       // private readonly IMessagePublisher _messageRabbitMq;
+
+        private readonly RabbitMqPublisher _rabbitMqPublisher;
+        private readonly AzureServiceBusPublisher _messageBusPublisher;
+        private readonly MessagePublishContext _messagePublishContext;
         private IConfiguration _configuration;
 
 
-        public CartApiController(AppDbContext appDbContext, IMapper mapper, IProductService productService, ICouponService couponService, IMessageBus messageBus, IMessagePublisher messageRabbitMq, IConfiguration configuration)
+        public CartApiController(AppDbContext appDbContext, IMapper mapper, IProductService productService, ICouponService couponService, IPublishMessage messageBus, IConfiguration configuration, RabbitMqPublisher rabbitMqPublisher, AzureServiceBusPublisher messageBusPublisher, MessagePublishContext messagePublishContext)
         {
             _response = new ResponseDto();
 
@@ -36,8 +42,11 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
             this._productService = productService;
             this._couponService = couponService;
             _messageBus = messageBus;
-            _messageRabbitMq = messageRabbitMq;
+            // _messageRabbitMq = messageRabbitMq;
             _configuration = configuration;
+            _rabbitMqPublisher = rabbitMqPublisher;
+            _messageBusPublisher = messageBusPublisher;
+            _messagePublishContext = messagePublishContext;
         }
         [HttpPost("ApplyCoupon")]
         public async Task<ResponseDto> ApplyCoupon([FromBody]CartDto cartDto)
@@ -236,8 +245,23 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
         {
             try
             {
-                 _messageRabbitMq.Publish(_configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"), cartDto);
-              await  _messageBus.PublishMessage(_configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"), cartDto);
+                var sendByRabbitMq = _configuration.GetValue<bool>("AllowedPublishers:RabbitMq");
+                var sendByServiceBus = _configuration.GetValue<bool>("AllowedPublishers:AzureServiceBus");
+                var activeStrategies = new List<IPublishMessage>();
+
+                if (sendByServiceBus)
+                    activeStrategies.Add(_messageBusPublisher);
+
+                if (sendByRabbitMq)
+                    activeStrategies.Add(_rabbitMqPublisher);
+
+                _messagePublishContext.SetStrategies(activeStrategies.ToArray());
+                await _messagePublishContext.PublishManyAsync(_configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"), cartDto);
+
+                //await _messagePublishContext.PublishAsync(_configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"), cartDto);
+
+                //await  _messageBus.PublishMessage(_configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"), cartDto);
+              //await  _messageBus.PublishMessage(_configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"), cartDto);
 
                 _response.Result = true;
                 _response.IsSuccuess = true;
