@@ -21,7 +21,7 @@ namespace Mango.Web.Services.CouponServices
             {
                 ApiType = SD.ApiType.POST,
                 Data = CouponDto,
-                Url = SD.CouponAPIBase + "/api/Coupon/", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Coupon/", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -31,7 +31,7 @@ namespace Mango.Web.Services.CouponServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.DELETE,
-                Url = SD.CouponAPIBase + "/api/Coupon/"+id, // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Coupon/"+id, // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -41,7 +41,7 @@ namespace Mango.Web.Services.CouponServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.CouponAPIBase+"/api/Coupon/", // ✅ FIXED
+                Url = SD.APIGateWay+"/api/Coupon/", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -51,7 +51,7 @@ namespace Mango.Web.Services.CouponServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.CouponAPIBase + $"/api/Coupon/{id}", // ✅ FIXED
+                Url = SD.APIGateWay + $"/api/Coupon/{id}", // ✅ FIXED
                 AccessToken = ""
             });
         } 
@@ -60,7 +60,7 @@ namespace Mango.Web.Services.CouponServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.CouponAPIBase + $"/api/Coupon/GetByCode/{code}", // ✅ FIXED
+                Url = SD.APIGateWay + $"/api/Coupon/GetByCode/{code}", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -71,7 +71,7 @@ namespace Mango.Web.Services.CouponServices
             {
                 ApiType = SD.ApiType.PUT,
                 Data = CouponDto,
-                Url = SD.CouponAPIBase + "/api/Coupon/", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Coupon/", // ✅ FIXED
                 AccessToken = ""
             });
         }

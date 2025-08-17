@@ -19,7 +19,7 @@ namespace Mango.Web.Services.CouponServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.ShoppingCartAPIBase + "/api/Cart/GetCart/" + userId, // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Cart/GetCart/" + userId, // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -30,7 +30,7 @@ namespace Mango.Web.Services.CouponServices
             {
                 ApiType = SD.ApiType.POST,
                 Data = cartDto,
-                Url = SD.ShoppingCartAPIBase + "/api/Cart/CartUpsert", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Cart/CartUpsert", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -42,7 +42,7 @@ namespace Mango.Web.Services.CouponServices
             {
                 ApiType = SD.ApiType.GET,
                 Data = CartDetilisId,
-                Url = SD.ShoppingCartAPIBase + "/api/Cart/RemoveFromCart", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Cart/RemoveFromCart", // ✅ FIXED
                 AccessToken = ""
             });
 
@@ -54,7 +54,7 @@ namespace Mango.Web.Services.CouponServices
             {
                 ApiType = SD.ApiType.POST,
                 Data = cartDto,
-                Url = SD.ShoppingCartAPIBase + "/api/Cart/ApplyCoupon", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Cart/ApplyCoupon", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -65,7 +65,7 @@ namespace Mango.Web.Services.CouponServices
             {
                 ApiType = SD.ApiType.POST,
                 Data = cartDto,
-                Url = SD.ShoppingCartAPIBase + "/api/Cart/EmailCartRequest", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Cart/EmailCartRequest", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -75,7 +75,7 @@ namespace Mango.Web.Services.CouponServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.DELETE,
-                Url = SD.CouponAPIBase + "/api/Coupon/"+id, // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Coupon/"+id, // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -85,7 +85,7 @@ namespace Mango.Web.Services.CouponServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.CouponAPIBase+"/api/Coupon/", // ✅ FIXED
+                Url = SD.APIGateWay+"/api/Coupon/", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -95,7 +95,7 @@ namespace Mango.Web.Services.CouponServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.CouponAPIBase + $"/api/Coupon/{id}", // ✅ FIXED
+                Url = SD.APIGateWay + $"/api/Coupon/{id}", // ✅ FIXED
                 AccessToken = ""
             });
         } 
@@ -104,7 +104,7 @@ namespace Mango.Web.Services.CouponServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.CouponAPIBase + $"/api/Coupon/GetByCode/{code}", // ✅ FIXED
+                Url = SD.APIGateWay + $"/api/Coupon/GetByCode/{code}", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -115,7 +115,7 @@ namespace Mango.Web.Services.CouponServices
             {
                 ApiType = SD.ApiType.PUT,
                 Data = CouponDto,
-                Url = SD.CouponAPIBase + "/api/Coupon/", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Coupon/", // ✅ FIXED
                 AccessToken = ""
             });
         }

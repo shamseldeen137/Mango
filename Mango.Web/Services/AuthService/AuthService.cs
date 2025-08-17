@@ -21,7 +21,7 @@ namespace Mango.Web.Services.AuthService
             {
                 ApiType = SD.ApiType.POST,
                 Data = RegisterRequestDto,
-                Url = SD.AuthAPIBase + "/api/Auth/AssignRole/", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Auth/AssignRole/", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -32,7 +32,7 @@ namespace Mango.Web.Services.AuthService
             {
                 ApiType = SD.ApiType.POST,
                 Data = loginRequestDto,
-                Url = SD.AuthAPIBase + "/api/Auth/Login/", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Auth/Login/", // ✅ FIXED
                 AccessToken = ""
             },withBearer:false);
         }
@@ -43,7 +43,7 @@ namespace Mango.Web.Services.AuthService
             {
                 ApiType = SD.ApiType.POST,
                 Data = RegisterRequestDto,
-                Url = SD.AuthAPIBase + "/api/Auth/register/", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Auth/register/", // ✅ FIXED
                 AccessToken = ""
             }, withBearer: false);
         }

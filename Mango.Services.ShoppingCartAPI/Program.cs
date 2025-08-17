@@ -31,10 +31,10 @@ builder.Services.AddScoped<BEApiAuthHandler>();
 
 builder.Services.AddHttpClient("Product",
     u=>u.BaseAddress = 
-    new Uri(builder.Configuration["ServiceUrls:ProductAPI"])).AddHttpMessageHandler<BEApiAuthHandler>();
+    new Uri(builder.Configuration["ServiceUrls:APIGateWay"])).AddHttpMessageHandler<BEApiAuthHandler>();
 builder.Services.AddHttpClient("Coupon",
     u=>u.BaseAddress = 
-    new Uri(builder.Configuration["ServiceUrls:CouponAPI"])).AddHttpMessageHandler<BEApiAuthHandler>();
+    new Uri(builder.Configuration["ServiceUrls:APIGateWay"])).AddHttpMessageHandler<BEApiAuthHandler>();
 
 builder.Services.AddRabbitMQMessaging(builder.Configuration);
 

@@ -21,7 +21,7 @@ namespace Mango.Web.Services.ProductServices
             {
                 ApiType = SD.ApiType.POST,
                 Data = ProductDto,
-                Url = SD.ProductAPIBase + "/api/Product/", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Product/", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -31,7 +31,7 @@ namespace Mango.Web.Services.ProductServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.DELETE,
-                Url = SD.ProductAPIBase + "/api/Product/" + id, // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Product/" + id, // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -41,7 +41,7 @@ namespace Mango.Web.Services.ProductServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.ProductAPIBase + "/api/Product/", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Product/", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -51,7 +51,7 @@ namespace Mango.Web.Services.ProductServices
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.ProductAPIBase + $"/api/Product/{id}", // ✅ FIXED
+                Url = SD.APIGateWay + $"/api/Product/{id}", // ✅ FIXED
                 AccessToken = ""
             });
         }
@@ -63,7 +63,7 @@ namespace Mango.Web.Services.ProductServices
             {
                 ApiType = SD.ApiType.PUT,
                 Data = ProductDto,
-                Url = SD.ProductAPIBase + "/api/Product/", // ✅ FIXED
+                Url = SD.APIGateWay + "/api/Product/", // ✅ FIXED
                 AccessToken = ""
             });
         }
