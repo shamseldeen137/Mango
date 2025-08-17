@@ -18,7 +18,7 @@ namespace Mango.Services.ShoppingCartAPI.Services.Product
         {
             var client = _httpClientFactory.CreateClient("Product");
             //client.DefaultRequestHeaders.Add(name:"Authorization",)
-            var apiResponse = await client.GetAsync("/api/productApi");
+            var apiResponse = await client.GetAsync("/api/Product");
             
                 var content = await apiResponse.Content.ReadAsStringAsync();
 

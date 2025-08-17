@@ -18,7 +18,7 @@ namespace Mango.Services.ShoppingCartAPI.Services.Product
         {
             var client = _httpClientFactory.CreateClient("Coupon");
             //client.DefaultRequestHeaders.Add(name:"Authorization",)
-            var apiResponse = await client.GetAsync($"/api/CouponApi/GetByCode/{Code}");
+            var apiResponse = await client.GetAsync($"/api/Coupon/GetByCode/{Code}");
             
                 var content = await apiResponse.Content.ReadAsStringAsync();
 
