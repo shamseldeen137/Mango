@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mango-sqlserver
+    environment:
+      SA_PASSWORD: "Mang0!Pass2025"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql  
+    networks:
+      - mango-net
+
+  gateway:
+    build: ./Mango.Gateway.ApiGateway
+    ports:
+      - "5000:8080"
+    depends_on:
+      - authapi
+      - couponapi
+      - emailapi
+      - productapi
+      - cartapi
+      - sqlserver
+    networks:
+      - mango-net
+
+  productapi:
+    build: ./Mango.Services.ProductAPI
+    ports:
+      - "7000:8080"
+    depends_on:
+      - sqlserver
+    networks:
+      - mango-net
+
+  couponapi:
+    build: ./Mango.Services.CouponAPI
+    ports:
+      - "7001:8080"
+    depends_on:
+      - sqlserver
+    networks:
+      - mango-net
+
+  authapi:
+    build: ./Mango.Services.AuthAPI
+    ports:
+      - "7002:8080"
+    depends_on:
+      - sqlserver
+    networks:
+      - mango-net
+
+  cartapi:
+    build:
+      context: .
+      dockerfile: Mango.Services.ShoppingCartAPI/Dockerfile
+    ports:
+      - "7003:8080"
+    depends_on:
+      - sqlserver
+    networks:
+      - mango-net
+
+  emailapi:
+    build: ./Mango.Services.EmailAPI
+    ports:
+      - "7004:8080"
+    depends_on:
+      - sqlserver
+    networks:
+      - mango-net
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:8080"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - gateway
+    networks:
+      - mango-net
+
+volumes:
+  sqlserver_data:
+
+networks:
+  mango-net:
+    driver: bridge

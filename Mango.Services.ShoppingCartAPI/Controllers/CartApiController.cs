@@ -204,7 +204,8 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
             }
             return _response;
 
-        } [HttpPost("RemoveCart")]
+        } 
+       // [HttpPost("RemoveCart")]
         
        [HttpGet("RemoveFromCart")]
 

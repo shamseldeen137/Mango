@@ -31,10 +31,10 @@ builder.Services.AddScoped<BEApiAuthHandler>();
 
 builder.Services.AddHttpClient("Product",
     u=>u.BaseAddress = 
-    new Uri(builder.Configuration["ServiceUrls:APIGateWay"])).AddHttpMessageHandler<BEApiAuthHandler>();
+    new Uri(builder.Configuration["ServiceUrls:DockerizeAPI"])).AddHttpMessageHandler<BEApiAuthHandler>();
 builder.Services.AddHttpClient("Coupon",
     u=>u.BaseAddress = 
-    new Uri(builder.Configuration["ServiceUrls:APIGateWay"])).AddHttpMessageHandler<BEApiAuthHandler>();
+    new Uri(builder.Configuration["ServiceUrls:DockerizeAPI"])).AddHttpMessageHandler<BEApiAuthHandler>();
 
 builder.Services.AddRabbitMQMessaging(builder.Configuration);
 
@@ -95,7 +95,7 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -106,7 +106,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-ApplyMigration();
+//ApplyMigration();
 app.Run();
 
 void ApplyMigration()
@@ -116,8 +116,14 @@ void ApplyMigration()
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         if (dbContext.Database.GetPendingMigrations().Count() > 0)
         {
-            dbContext.Database.EnsureCreated();
-            dbContext.Database.Migrate();
+
+            //dbContext.Database.EnsureCreated();
+            
+                dbContext.Database.Migrate();
+
+           
+          
+            
 
         }
 

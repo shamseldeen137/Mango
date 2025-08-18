@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -43,7 +43,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-ApplyMigration();
+//ApplyMigration();
 app.Run();
 void ApplyMigration()
 {
@@ -52,7 +52,7 @@ void ApplyMigration()
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         if (dbContext.Database.GetPendingMigrations().Count() > 0)
         {
-            dbContext.Database.EnsureCreated();
+            //dbContext.Database.EnsureCreated();
             dbContext.Database.Migrate();
 
         }

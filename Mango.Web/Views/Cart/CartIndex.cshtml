@@ -1,6 +1,6 @@
 ﻿@using Mango.Web.Cart.Models.Dto;
 @model CartDto
-@if(Model.CartHeader!=null && Model.CartDetails?.Count()>0){
+@if(Model?.CartHeader!=null && Model.CartDetails?.Count()>0){
 <form method="post" asp-action="EmailCart">
     <br />
     <input asp-for="CartHeader.UserId" hidden />
