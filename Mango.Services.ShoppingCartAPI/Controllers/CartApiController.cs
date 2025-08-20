@@ -48,6 +48,9 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
             _messageBusPublisher = messageBusPublisher;
             _messagePublishContext = messagePublishContext;
         }
+
+  
+
         [HttpPost("ApplyCoupon")]
         public async Task<ResponseDto> ApplyCoupon([FromBody]CartDto cartDto)
         {

@@ -1,4 +1,4 @@
-version: '3.8'
+﻿version: '3.8'
 
 services:
   rabbitmq:
@@ -32,6 +32,21 @@ services:
     build: ./Mango.Gateway.ApiGateway
     ports:
       - "5000:8080"
+    depends_on:
+      - authapi
+      - couponapi
+      - emailapi
+      - productapi
+      - cartapi
+      - sqlserver
+    networks:
+      - mango-net
+
+  gateway2:
+    build: ./Mango.Gateway.ApiGateway
+    container_name: gateway2
+    ports:
+      - "5002:8080"
     depends_on:
       - authapi
       - couponapi
@@ -104,11 +119,12 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - "80:8080"
+    - "8080:80"  # Host port 8080 → Container port 80
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - gateway
+      - gateway2
     networks:
       - mango-net
 
