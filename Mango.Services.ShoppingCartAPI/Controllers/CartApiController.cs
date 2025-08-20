@@ -5,6 +5,7 @@ using Mango.RabbitMQ.Messaging;
 using Mango.Services.ShoppingCartAPI.Data;
 using Mango.Services.ShoppingCartAPI.Models.Dto;
 using Mango.Services.ShoppingCartAPI.Models.Entities;
+using Mango.Services.ShoppingCartAPI.Services.IServices;
 using Mango.Services.ShoppingCartAPI.Services.Product;
 using Mango.Services.ShoppingCartAPI.Utility;
 using Mango.Web.Services.IServices;
@@ -31,9 +32,10 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
         private readonly AzureServiceBusPublisher _messageBusPublisher;
         private readonly MessagePublishContext _messagePublishContext;
         private IConfiguration _configuration;
+        private readonly IAiService _aiService;
 
 
-        public CartApiController(AppDbContext appDbContext, IMapper mapper, IProductService productService, ICouponService couponService, IPublishMessage messageBus, IConfiguration configuration, RabbitMqPublisher rabbitMqPublisher, AzureServiceBusPublisher messageBusPublisher, MessagePublishContext messagePublishContext)
+        public CartApiController(AppDbContext appDbContext, IMapper mapper, IProductService productService, ICouponService couponService, IPublishMessage messageBus, IConfiguration configuration, RabbitMqPublisher rabbitMqPublisher, AzureServiceBusPublisher messageBusPublisher, MessagePublishContext messagePublishContext, IAiService aiService)
         {
             _response = new ResponseDto();
 
@@ -47,6 +49,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
             _rabbitMqPublisher = rabbitMqPublisher;
             _messageBusPublisher = messageBusPublisher;
             _messagePublishContext = messagePublishContext;
+            _aiService = aiService;
         }
         [HttpPost("ApplyCoupon")]
         public async Task<ResponseDto> ApplyCoupon([FromBody]CartDto cartDto)
@@ -275,6 +278,63 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
             }
             return _response;
         }
+
+        [HttpGet("smart-recommendation/{userId}")]
+        public async Task<IActionResult> GetSmartRecommendation(string userId= "c17ef2ed-0df8-4f76-b8e3-a15f0ded1d2f")
+        {
+            var cartItems = await GetItems(userId);
+            var prompt = $"Based on these items: {string.Join(", ", cartItems.Select(i => i.Name))}, suggest one complementary product.";
+
+            var recommendation = await _aiService.GetRecommendationAsync(prompt);
+            return Ok(recommendation);
+        }
+
+        private async Task<List<ProductDto>> GetItems(string userId)
+        {
+            List<ProductDto> userproducts = new List<ProductDto>();
+
+            try
+            {
+                CartDto cart = new()
+                {
+                    CartHeader = _mapper.Map<CartHeaderDto>(_db.CartHeaders.AsNoTracking().FirstOrDefault(a => a.UserId == userId)),
+
+                };
+                if (cart.CartHeader != null)
+                {
+                    cart.CartDetails = _mapper.Map<IEnumerable<CartDetailsDto>>(_db.CartDetails.AsNoTracking().Where(a => a.CartHeaderId == cart.CartHeader.CartHeaderId));
+
+
+                    IEnumerable<ProductDto> products = await _productService.GetAllProductsAsync();
+                    foreach (var item in cart.CartDetails)
+                    {
+                        item.Product = products.FirstOrDefault(p => p.ProductId == item.ProductId);
+
+                        
+                    }
+                    userproducts.AddRange(cart.CartDetails.Select(a=>a.Product));
+
+
+                }
+                else
+                {
+                   return null;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+
+
+
+            return userproducts;
+        }
+
 
     }
 }

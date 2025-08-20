@@ -14,7 +14,10 @@ using Mango.Services.ShoppingCartAPI.Utility;
 using Mango.RabbitMQ.Messaging;
 using Mango.MessageBus.Utility;
 using Mango.MessageBus.Messaging;
-using Mango.MessageBus.IMessaging; // Add this using directive at the top of the file
+using Mango.MessageBus.IMessaging;
+using Mango.Services.ShoppingCartAPI.Services.IServices;
+using Mango.Services.ShoppingCartAPI.Services.AIService;
+using System.Net.Http.Headers; // Add this using directive at the top of the file
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -88,6 +91,11 @@ builder.Services.AddScoped<ICouponService,CouponService>();
 builder.Services.AddTransient<AzureServiceBusPublisher>();
 builder.Services.AddTransient<RabbitMqPublisher>();
 builder.Services.AddTransient<MessagePublishContext>();
+
+
+builder.Services.AddHttpClient<IAiService, AiService>(client =>
+{
+    });
 
 
 var app = builder.Build();
