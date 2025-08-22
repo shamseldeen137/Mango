@@ -1,0 +1,20 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cartapi
+  template:
+    metadata:
+      labels:
+        app: cartapi
+    spec:
+      containers:
+        - name: cartapi
+          image: mango-cartapi:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
