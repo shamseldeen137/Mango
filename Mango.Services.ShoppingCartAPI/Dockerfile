@@ -11,8 +11,8 @@ WORKDIR /src
 COPY . .
 
 # Restore and publish
-RUN dotnet restore Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCartAPI.csproj
-RUN dotnet publish Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCartAPI.csproj -c Release -o /app/publish
+RUN dotnet restore Mango.Services.ShoppingCartAPI.csproj
+RUN dotnet publish Mango.Services.ShoppingCartAPI.csproj -c Release -o /app/publish
 
 # Final image
 FROM base AS final

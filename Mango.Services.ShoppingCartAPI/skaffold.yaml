@@ -1,0 +1,13 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: mango.services.shoppingcartapi
+build:
+  artifacts:
+    - image: mango-cartapi
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - deployment.yaml
+    - service.yaml
