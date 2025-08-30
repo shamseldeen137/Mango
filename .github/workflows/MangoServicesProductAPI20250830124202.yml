@@ -51,7 +51,7 @@ jobs:
             --hostbuilder Mango.Services.ProductAPI.Program
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: productapi-artifact
           path: |
@@ -63,14 +63,11 @@ jobs:
     needs: build
 
     steps:
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
         with:
-         name: productapi-artifact
-         path: |
-            ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-            ${{ env.API_IMPORT_SPECIFICATION_PATH }}
-
+          name: productapi-artifact
+          path: .
 
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v2
