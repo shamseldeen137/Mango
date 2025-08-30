@@ -76,12 +76,12 @@ app.MapControllers();
 
 //ApplyMigration();
 app.Run();
- static IHostBuilder CreateHostBuilder(string[] args) =>
-       Host.CreateDefaultBuilder(args)
-           .ConfigureWebHostDefaults(webBuilder =>
-           {
-               webBuilder.UseStartup<FakeStartup>(); // √Ê Minimal API „»«‘—…
-           });
+ //static IHostBuilder CreateHostBuilder(string[] args) =>
+ //      Host.CreateDefaultBuilder(args)
+ //          .ConfigureWebHostDefaults(webBuilder =>
+ //          {
+ //              webBuilder.UseStartup<FakeStartup>(); // √Ê Minimal API „»«‘—…
+ //          });
 
 void ApplyMigration()
 {
