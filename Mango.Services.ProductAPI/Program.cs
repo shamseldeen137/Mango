@@ -5,6 +5,7 @@ using Mango.Services.ProductAPI.Extentions;
 using Mango.Services.ProductAPI.Repos.IRepos;
 using Mango.Services.ProductAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -60,7 +61,7 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -75,6 +76,12 @@ app.MapControllers();
 
 //ApplyMigration();
 app.Run();
+ static IHostBuilder CreateHostBuilder(string[] args) =>
+       Host.CreateDefaultBuilder(args)
+           .ConfigureWebHostDefaults(webBuilder =>
+           {
+               webBuilder.UseStartup<FakeStartup>(); // √Ê Minimal API „»«‘—…
+           });
 
 void ApplyMigration()
 {
