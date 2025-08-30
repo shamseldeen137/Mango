@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-SD.APIGateWay = builder.Configuration["ServiceUrls:APIGateway"] ;
+SD.APIGateWay = builder.Configuration["ServiceUrls:LoadBalancerURL"] ;
 //SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"] ;
 //SD.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"] ;
 //SD.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"] ;
