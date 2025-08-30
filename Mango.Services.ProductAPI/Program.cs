@@ -74,7 +74,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//ApplyMigration();
+ApplyMigration();
 app.Run();
  //static IHostBuilder CreateHostBuilder(string[] args) =>
  //      Host.CreateDefaultBuilder(args)
