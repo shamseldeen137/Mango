@@ -14,6 +14,14 @@ namespace Mango.Services.ProductAPI.Extentions
             var secret = Section.GetValue<string>("Secret");
             var issuer = Section.GetValue<string>("Issuer");
             var audience = Section.GetValue<string>("Audience");
+            // ✅ حماية ضد null في بيئة CI
+            if (string.IsNullOrWhiteSpace(secret) || string.IsNullOrWhiteSpace(issuer) || string.IsNullOrWhiteSpace(audience))
+            {
+                // تخطي التوثيق في بيئة توليد Swagger
+                Console.WriteLine("Skipping JWT setup due to missing configuration (likely running in Swagger CLI context).");
+                return builder;
+            }
+
 
             var key = Encoding.ASCII.GetBytes(secret);
             builder.Services.AddAuthentication(x =>
