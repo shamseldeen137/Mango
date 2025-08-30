@@ -63,11 +63,14 @@ jobs:
     needs: build
 
     steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: productapi-artifact
-          path: .
+         name: productapi-artifact
+         path: |
+            ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+            ${{ env.API_IMPORT_SPECIFICATION_PATH }}
+
 
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v2
