@@ -1,4 +1,4 @@
-using AutoMapper;
+Ôªøusing AutoMapper;
 using Mango.Services.ProductAPI;
 using Mango.Services.ProductAPI.Data;
 using Mango.Services.ProductAPI.Extentions;
@@ -80,11 +80,19 @@ app.Run();
  //      Host.CreateDefaultBuilder(args)
  //          .ConfigureWebHostDefaults(webBuilder =>
  //          {
- //              webBuilder.UseStartup<FakeStartup>(); // √Ê Minimal API „»«‘—…
+ //              webBuilder.UseStartup<FakeStartup>(); // ÿ£Ÿà Minimal API ŸÖÿ®ÿßÿ¥ÿ±ÿ©
  //          });
 
 void ApplyMigration()
 {
+
+    var skipDb = Environment.GetEnvironmentVariable("GENERATING_SWAGGER") == "true";
+    if (skipDb)
+    {
+        Console.WriteLine("‚è≠Ô∏è Skipping DB migration during Swagger generation.");
+        return;
+    }
+
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
